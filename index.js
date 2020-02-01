@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const cors = require('cors')({ origin: true});
 const admin = require('firebase-admin');
-const serviceAccount = require(''./service-account.json');
+const serviceAccount = require('./service-account.json');
 //const request = require("request");
 const express = require("express");
 const bodyParser = require("body-parser");

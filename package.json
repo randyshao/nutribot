@@ -1,0 +1,25 @@
+{
+  "name": "nutribot",
+  "version": "1.0.0",
+  "description": "qhacks 2020",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randyshao/nutribot.git"
+  },
+  "author": "Randy Shao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/randyshao/nutribot/issues"
+  },
+  "homepage": "https://github.com/randyshao/nutribot#readme",
+  "dependencies": {
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

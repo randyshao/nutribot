@@ -19,6 +19,11 @@ app.get('/', verificationController);
 app.post('/', messageWebhookController);
 
 const port = process.env.PORT || 5000;
+console.log("Printing", + serviceAccount)
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://nutribot-huwsre.firebaseio.com"
+});
 
 // Create an endpoint that recieves a POST request to ..url../query (This is an asynchronous)
 app.post('/query', async (req, res) => {
@@ -81,10 +86,7 @@ app.listen(port, () => {
 // // const url = `https://api.edamam.com/api/food-database/parser?nutrition-type=logging&ingr=${food}&app_id=${app_id}&app_key=${app_key}`
 // const url1 = `https://api.edamam.com/api/food-database/parser?nutrition-type=logging&ingr=red%20apple&app_id=29928df0&app_key=1350d047cf8c640608deb36a4c9eec55`
 
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-//     databaseURL: "https://nutribot-huwsre.firebaseio.com"
-//   });
+
 
 //   const { SessionsClient } = require('dialogflow');
 

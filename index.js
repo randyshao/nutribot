@@ -5,7 +5,6 @@ const serviceAccount = require('./service-account.json');
 //const request = require("request");
 const express = require("express");
 const bodyParser = require("body-parser");
-const verifyWebhook = require('./verify-webhook');
 const request = require('request');
 
 const app = express();
@@ -13,7 +12,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', verifyWebhook);
+const verificationController = require('./controllers/verification');
+const messageWebhookController = require('./helpers/messageWebhook');
+app.get('/', verificationController);
+app.post('/', messageWebhookController);
 
 const port = process.env.PORT || 5000;
 

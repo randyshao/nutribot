@@ -6,6 +6,7 @@ const serviceAccount = require('./service-account.json');
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require('request');
+const axios = require('axios');
 
 const app = express();
 
@@ -18,6 +19,58 @@ app.get('/', verificationController);
 app.post('/', messageWebhookController);
 
 const port = process.env.PORT || 5000;
+
+// Create an endpoint that recieves a POST request to ..url../query (This is an asynchronous)
+app.post('/query', async (req, res) => {
+    try {
+        // heroku logs --tail
+        console.log(req.body);
+
+        // Destructure the JSON that Dialogflow sends to this endpoint
+        const { queryResult } = req.body;
+
+        // Destructure some more
+        const query = queryResult.queryText
+        
+        // Create the URI to the food database thing endpoint
+        const uri = "https://api.edamam.com/api/food-database/parser";
+
+        // Use Axios to send a GET request to that API with parameters, one being the query 
+        const res = await axios.get(uri, { params: {
+                "nutrition-type": "logging",
+                ingr: query,
+                "app_id": "29928df0",
+                "app_key": "1350d047cf8c640608deb36a4c9eec55"
+            }
+        });
+
+        console.log(res.data)
+
+        // Destructure data out of that response, whatever you want
+        const calories = res.data.parsed[0].food.nutrients.ENERC_KCAL;
+
+        // Build a actual like presentable text sentence for the user based on that destructured data
+        const sentence = `${ingr} has ${calories} calories!`;
+
+        // Build the JSON for diagflow
+        const response = {
+            fulfillmentText: sentence,
+            payload: {
+                facebook: {
+                    text: sentence
+                }
+            }
+        }
+
+        // Send it back
+        res.json(response);
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send({ msg: "Please check your food!"})
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
